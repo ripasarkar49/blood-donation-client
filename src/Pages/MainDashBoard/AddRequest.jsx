@@ -3,6 +3,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import axios from "axios";
 import useAxios from "../../Hooks/UseAxios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 export default function AddRequest() {
   const { user } = useContext(AuthContext);
@@ -10,7 +11,7 @@ export default function AddRequest() {
   const [district, setDistrict] = useState("");
   const [upazilas, setUpozilas] = useState([]);
   const [upazila, setUpozila] = useState("");
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
     axios
       .get("/districts.json")
@@ -58,7 +59,7 @@ export default function AddRequest() {
       message,
       donation_status: "pending",
     };
-    axiosInstance
+    axiosSecure
       .post("/requests", formData)
       .then((res) => {
         Swal.fire({
@@ -234,7 +235,7 @@ export default function AddRequest() {
             </div>
 
             {/* Submit Button */}
-            <button className="btn btn-primary w-full mt-4">Request</button>
+            <button className="btn btn- w-full mt-4">Request</button>
           </form>
         </div>
       </div>

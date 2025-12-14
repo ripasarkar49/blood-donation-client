@@ -18,6 +18,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(true);
   const [role, setRole] = useState("");
   // console.log(loading, user);
 
@@ -58,6 +59,7 @@ const AuthProvider = ({ children }) => {
     axios.get(`http://localhost:5000/users/role/${user.email}`).then((res) => {
       //   console.log(res.data.role);
       setRole(res.data.role);
+      setRoleLoading(false)
       //   setLoading(false);
     });
   }, [user]);
@@ -75,6 +77,7 @@ const AuthProvider = ({ children }) => {
     googleLogin,
     resetPassword,
     role,
+    roleLoading
   };
   return <AuthContext value={authData}>{children}</AuthContext>;
 };

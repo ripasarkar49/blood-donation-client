@@ -81,8 +81,6 @@ const Register = () => {
       upazila,
     };
 
-    
-
     if (res.data.success == true) {
       createUser(email, password)
         .then((result) => {
@@ -264,7 +262,7 @@ const Register = () => {
 
             <p className="pt-4 text-center">
               Already have an account?{" "}
-              <Link to="/auth/login" className="text-secondary font-semibold">
+              <Link to="/login" className="text-secondary font-semibold">
                 Login
               </Link>
             </p>

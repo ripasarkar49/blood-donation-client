@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router";
 import {
   Home,
@@ -8,9 +8,25 @@ import {
   BarChart3,
   LogOut,
   PackageCheck,
+  PlusCircle,
 } from "lucide-react";
+import { AuthContext } from "../../Provider/AuthProvider";
+import Swal from "sweetalert2";
 
 const AdminSidebar = () => {
+  const { role, logout } = useContext(AuthContext);
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "LogOut Successful!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <aside className="w-64 h-screen bg-gray-900 text-gray-200 flex flex-col p-5 shadow-xl">
       {/* Logo */}
@@ -21,7 +37,7 @@ const AdminSidebar = () => {
       {/* Navigation */}
       <nav className="flex flex-col gap-3">
         <NavLink
-          to="dashboard"
+          to="/dashboard"
           className={({ isActive }) =>
             `flex items-center gap-3 p-3 rounded-lg transition relative
               ${
@@ -34,20 +50,41 @@ const AdminSidebar = () => {
           {" "}
           <Home className="h-5 w-5" /> Dashboard
         </NavLink>
-        <NavLink
-          to="/dashboard/add-request"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
+        {role == "donar" && (
+          <NavLink
+            to="add-request"
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-3 rounded-lg transition relative
               ${
                 isActive
                   ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
                   : "hover:bg-gray-700"
               }`
-          }
-        >
-          {" "}
-          <Package className="h-5 w-5" /> Add-Request
-        </NavLink>
+            }
+          >
+            {" "}
+            <PlusCircle className="h-5 w-5 bg-red-700" />
+            {/* <Heart size={24} /> */}
+            Add Donation Request
+          </NavLink>
+        )}
+        {role == "admin" && (
+          <NavLink
+            to="all-users"
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-3 rounded-lg transition relative
+              ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
+                  : "hover:bg-gray-700"
+              }`
+            }
+          >
+            {" "}
+            <Users className="h-5 w-5" />
+            All Users
+          </NavLink>
+        )}
         <NavLink
           to="manage-product"
           className={({ isActive }) =>
@@ -60,10 +97,10 @@ const AdminSidebar = () => {
           }
         >
           {" "}
-          <PackageCheck className="h-5 w-5" />
+          <PlusCircle className="h-5 w-5" />
           Manage-Product
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to="add-uct"
           className={({ isActive }) =>
             `flex items-center gap-3 p-3 rounded-lg transition relative
@@ -90,25 +127,14 @@ const AdminSidebar = () => {
         >
           {" "}
           <BarChart3 className="h-5 w-5" /> Analytics
-        </NavLink>
-        <NavLink
-          to="add"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-          }
-        >
-          {" "}
-          <Users className="h-5 w-5" /> Users
-        </NavLink>
+        </NavLink> */}
       </nav>
 
       {/* Logout */}
-      <button className="mt-auto flex items-center justify-center gap-2 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition">
+      <button
+        onClick={handleLogout}
+        className="mt-auto flex items-center justify-center gap-2 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition"
+      >
         <LogOut size={18} /> Logout
       </button>
     </aside>
