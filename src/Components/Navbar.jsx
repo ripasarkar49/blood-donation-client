@@ -25,19 +25,22 @@ const Navbar = () => {
   };
 
   const navItemClass =
-    "px-3 py-2 rounded hover:bg-blue-600 hover:text-white transition";
+    "px-3 py-2 rounded hover:bg-red-600 hover:text-white transition";
+
+  const gradientBtn =
+    "btn btn-sm text-white bg-gradient-to-r from-red-500 to-rose-600 border-none";
 
   return (
     <>
       {/* ================= Navbar ================= */}
-      <div className="navbar bg-white shadow-md px-4 lg:px-10">
+      <div className="navbar bg-white shadow-md px-4 lg:px-10 ">
         {/* Left */}
         <div className="navbar-start">
           <button className="lg:hidden mr-2" onClick={() => setOpen(true)}>
             ☰
           </button>
 
-          <Link to="/" className="flex items-center gap-0">
+          <Link to="/" className="flex items-center gap-1">
             <img src={logo} className="w-10 h-10" alt="logo" />
             <span className="text-2xl font-bold text-red-600">BloodCare</span>
           </Link>
@@ -58,18 +61,23 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Right */}
+        {/* Right (Desktop) */}
         <div className="navbar-end hidden lg:flex gap-3">
           {!user ? (
-            <Link to="/login" className="btn btn-sm bg-blue-600 text-white">
-              Login
-            </Link>
+            <>
+              <Link to="/login" className={gradientBtn}>
+                Login
+              </Link>
+              <Link to="/register" className={gradientBtn}>
+                Register
+              </Link>
+            </>
           ) : (
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="cursor-pointer">
                 <img
                   src={user?.photoURL || userIcon}
-                  className="w-10 h-10 rounded-full border-2 border-red-700"
+                  className="w-10 h-10 rounded-full border-2 border-red-600"
                   alt="user"
                 />
               </label>
@@ -92,7 +100,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ================= Mobile Drawer ================= */}
+      {/* ================= Mobile Overlay ================= */}
       {open && (
         <div
           className="fixed inset-0 bg-black/40 z-40"
@@ -100,18 +108,20 @@ const Navbar = () => {
         />
       )}
 
+      {/* ================= Mobile Drawer ================= */}
       <div
         className={`fixed top-0 left-0 h-full w-72 bg-white z-50 shadow-lg transform transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        {/* Header */}
         <div className="p-4 border-b flex items-center gap-3">
           {user ? (
             <>
               <img
                 src={user?.photoURL || userIcon}
                 alt="user"
-                className="w-12 h-12 rounded-full border"
+                className="w-12 h-12 rounded-full border-2 border-red-600"
               />
               <div>
                 <p className="font-semibold">{user.displayName || "User"}</p>
@@ -127,6 +137,7 @@ const Navbar = () => {
           </button>
         </div>
 
+        {/* Links */}
         <ul className="p-4 flex flex-col gap-3 text-lg">
           <Link to="/donation-requests" onClick={() => setOpen(false)}>
             Donation Requests
@@ -144,14 +155,17 @@ const Navbar = () => {
           )}
         </ul>
 
-        <div className="p-4 border-t">
+        {/* Auth Buttons */}
+        <div className="p-4 border-t flex flex-col gap-2">
           {!user ? (
-            <Link
-              to="/login"
-              className="btn btn-sm w-full bg-blue-600 text-white"
-            >
-              Login
-            </Link>
+            <>
+              <Link to="/login" className={`${gradientBtn} w-full`}>
+                Login
+              </Link>
+              <Link to="/register" className={`${gradientBtn} w-full`}>
+                Register
+              </Link>
+            </>
           ) : (
             <button
               onClick={handleLogout}

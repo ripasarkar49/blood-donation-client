@@ -94,6 +94,7 @@ const Register = () => {
                 showConfirmButton: false,
               });
               setUser({ ...user, displayName: name, photoURL: mainPhotoUrl });
+              navigate(location.state ? location.state : "/");
               axios
                 .post("http://localhost:5000/users", formData)
                 .then((res) => {
