@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router";
+import profileIcon from "../../assets/user.png";
 import {
   Home,
   Users,
@@ -9,9 +10,11 @@ import {
   LogOut,
   PackageCheck,
   PlusCircle,
+  HeartHandshake,
 } from "lucide-react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import { CgProfile } from "react-icons/cg";
 
 const AdminSidebar = () => {
   const { role, logout } = useContext(AuthContext);
@@ -50,6 +53,22 @@ const AdminSidebar = () => {
           {" "}
           <Home className="h-5 w-5" /> Dashboard
         </NavLink>
+        <NavLink
+          to="profile"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition relative
+              ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
+                  : "hover:bg-gray-700"
+              }`
+          }
+        >
+          {" "}
+          {/* <img className="h-5 w-5" />  */}
+          <CgProfile className=" h-5 w-5 bg-red-700" />
+          Profile
+        </NavLink>
         {role == "donar" && (
           <NavLink
             to="add-request"
@@ -85,58 +104,40 @@ const AdminSidebar = () => {
             All Users
           </NavLink>
         )}
-        <NavLink
-          to="my-donation-requests"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
+        {role == "donar" && (
+          <NavLink
+            to="my-donation-requests"
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-3 rounded-lg transition relative
               ${
                 isActive
                   ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
                   : "hover:bg-gray-700"
               }`
-          }
-        >
-          {" "}
-          <PlusCircle className="h-5 w-5" />
-          My Donation Requests
-        </NavLink>
-        {/* <NavLink
-          to="add-uct"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-          }
-        >
-          {" "}
-          <ShoppingBag className="h-5 w-5" /> Orders
-        </NavLink>
-        <NavLink
-          to="add-t"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-          }
-        >
-          {" "}
-          <BarChart3 className="h-5 w-5" /> Analytics
-        </NavLink> */}
+            }
+          >
+            {" "}
+            <HeartHandshake className="h-5 w-5 bg-red-700" />
+            My Donation Requests
+          </NavLink>
+        )}
       </nav>
 
       {/* Logout */}
-      <button
-        onClick={handleLogout}
-        className="mt-auto flex items-center justify-center gap-2 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition"
-      >
-        <LogOut size={18} /> Logout
-      </button>
+      <div className="mt-auto flex items-center justify-between">
+        <NavLink
+          to="/"
+          className=" btn  bg-red-600 hover:bg-red-700 rounded-lg transition"
+        >
+          <Home size={18} /> Home
+        </NavLink>
+        <button
+          onClick={handleLogout}
+          className="btn bg-red-600 hover:bg-red-700 rounded-lg transition"
+        >
+          <LogOut size={18} /> Logout
+        </button>
+      </div>
     </aside>
   );
 };

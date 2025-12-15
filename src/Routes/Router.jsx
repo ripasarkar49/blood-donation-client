@@ -9,6 +9,7 @@ import AddRequest from "../Pages/MainDashBoard/AddRequest";
 import AllUsers from "../Pages/Allusers/AllUsers";
 import PrivateRoutes from "../Provider/PrivateRoutes";
 import MyDonateRequest from "../Pages/MainDashBoard/MyDonateRequest";
+import Profile from "../Pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "my-donation-requests",
         element: <MyDonateRequest></MyDonateRequest>,
+      },
+      {
+        path: "profile",
+        element: <Profile></Profile>,
       },
     ],
   },

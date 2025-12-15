@@ -114,6 +114,7 @@ export default function AddRequest() {
                 name="Recipient_Name"
                 placeholder="Recipient Name"
                 className="input input-bordered w-full"
+                required
               />
             </div>
 
@@ -148,6 +149,7 @@ export default function AddRequest() {
                   name="req_upazila"
                   onChange={(e) => setUpozila(e.target.value)}
                   className="select"
+                  required
                 >
                   <option value="" disabled>
                     Select Your Upazila

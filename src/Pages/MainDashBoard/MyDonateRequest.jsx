@@ -40,7 +40,7 @@ const MyDonateRequest = () => {
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
         <table className="table ">
           <thead>
-            <tr>
+            <tr className="bg-red-200">
               <th></th>
               <th>Recipient Name</th>
               <th>Recipient Location</th>
@@ -53,7 +53,7 @@ const MyDonateRequest = () => {
           <tbody>
             {myRequest.map((request, index) => (
               <tr key={request?._id}>
-                <th>{(currentPage*10)+(index + 1)-10}</th>
+                <th>{currentPage * 10 + (index + 1) - 10}</th>
                 <td>{request?.Recipient_Name}</td>
                 <td>{request?.full_address}</td>
                 <td>{request?.date}</td>
