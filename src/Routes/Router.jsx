@@ -5,11 +5,10 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import DashBoardLayOut from "../Layoutes/DashBoardLayOut";
 import MainDashBoard from "../Pages/MainDashBoard/MainDashBoard";
-
-import ManageProduct from "../Pages/MainDashBoard/ManageProduct";
 import AddRequest from "../Pages/MainDashBoard/AddRequest";
 import AllUsers from "../Pages/Allusers/AllUsers";
 import PrivateRoutes from "../Provider/PrivateRoutes";
+import MyDonateRequest from "../Pages/MainDashBoard/MyDonateRequest";
 
 const router = createBrowserRouter([
   {
@@ -52,8 +51,8 @@ const router = createBrowserRouter([
         element: <AllUsers></AllUsers>,
       },
       {
-        path: "/dashboard/manage-product",
-        element: <ManageProduct></ManageProduct>,
+        path: "my-donation-requests",
+        element: <MyDonateRequest></MyDonateRequest>,
       },
     ],
   },

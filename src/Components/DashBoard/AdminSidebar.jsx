@@ -86,7 +86,7 @@ const AdminSidebar = () => {
           </NavLink>
         )}
         <NavLink
-          to="manage-product"
+          to="my-donation-requests"
           className={({ isActive }) =>
             `flex items-center gap-3 p-3 rounded-lg transition relative
               ${
@@ -98,7 +98,7 @@ const AdminSidebar = () => {
         >
           {" "}
           <PlusCircle className="h-5 w-5" />
-          Manage-Product
+          My Donation Requests
         </NavLink>
         {/* <NavLink
           to="add-uct"
