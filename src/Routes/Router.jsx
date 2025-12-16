@@ -10,6 +10,9 @@ import AllUsers from "../Pages/Allusers/AllUsers";
 import PrivateRoutes from "../Provider/PrivateRoutes";
 import MyDonateRequest from "../Pages/MainDashBoard/MyDonateRequest";
 import Profile from "../Pages/Profile";
+import Funding from "../Pages/Founding/Funding";
+import PaymentSuccess from "../Pages/Founding/PaymentSuccess";
+import PaymentCancelled from "../Pages/Founding/PaymentCancelled";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +30,18 @@ const router = createBrowserRouter([
       {
         path: "/register",
         Component: Register,
+      },
+      {
+        path: "/funding",
+        Component: Funding,
+      },
+      {
+        path: "/payment-success",
+        Component: PaymentSuccess,
+      },
+      {
+        path: "/payment-cancelled",
+        Component: PaymentCancelled,
       },
     ],
   },

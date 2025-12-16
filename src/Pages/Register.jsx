@@ -174,7 +174,8 @@ const Register = () => {
               required
             />
             {/* choose a blood*/}
-            <select name="blood" defaultValue="" className="select my-3">
+            <label className="label">Blood Group</label>
+            <select name="blood" defaultValue="" className="select ">
               <option value="" disabled={true}>
                 Select blood group
               </option>
@@ -189,6 +190,7 @@ const Register = () => {
               <option value="unknown">Unknown</option>
             </select>
             {/* districts */}
+            <label className="label">District</label>
             <select
               value={district}
               onChange={(e) => setDistrict(e.target.value)}
@@ -204,6 +206,7 @@ const Register = () => {
               ))}
             </select>
             {/* upazila */}
+            <label className="label">Upazila</label>
             <select
               value={upazila}
               onChange={(e) => setUpozila(e.target.value)}
@@ -251,15 +254,15 @@ const Register = () => {
               Register
             </button>
 
-            <p className="font-bold text-center py-1">OR</p>
+            {/* <p className="font-bold text-center py-1">OR</p> */}
 
             {/* Google Login */}
-            <button
+            {/* <button
               onClick={handleGoogleLogin}
               className="btn btn-secondary btn-outline w-full"
             >
               <FaGoogle size={24} /> Login With Google
-            </button>
+            </button> */}
 
             <p className="pt-4 text-center">
               Already have an account?{" "}

@@ -98,13 +98,13 @@ const Login = () => {
               Login
             </button>
             {error && <p className="text-red-600 text-xs">{error}</p>}
-            <p className="font-bold text-center py-1 ">OR</p>
-            <button
+            {/* <p className="font-bold text-center py-1 ">OR</p> */}
+            {/* <button
               onClick={handleGoogleLogin}
               className="btn btn-secondary btn-outline w-full"
             >
               <FaGoogle size={24} /> Login With Google
-            </button>
+            </button> */}
           </fieldset>
           <p>
             Don't have an account?{" "}
