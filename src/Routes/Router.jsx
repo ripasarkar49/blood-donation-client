@@ -18,6 +18,7 @@ import DonateRequest from "../Pages/donateRequest/DonateRequest";
 import DonarDetails from "../Pages/DonarDetails/DonarDetails";
 import Banner from "../Components/Banner";
 import FeaturedSection from "../Components/FeaturedSection";
+import ContactUs from "../Components/ContactUs";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/search-page",
         element:<SearchPage></SearchPage>,
+      },
+      {
+        path: "/contact-us",
+        element:<ContactUs></ContactUs>,
       },
       {
         path: "/funding",
