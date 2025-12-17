@@ -16,6 +16,7 @@ import PaymentCancelled from "../Pages/Founding/PaymentCancelled";
 import SearchPage from "../Pages/searchPage/SearchPage";
 import DonateRequest from "../Pages/donateRequest/DonateRequest";
 import DonarDetails from "../Pages/DonarDetails/DonarDetails";
+import Banner from "../Components/Banner";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element:<Register></Register>,
+      },
+      {
+        path: "/banner",
+        element:<Banner></Banner>,
       },
       {
         path: "/search-page",
@@ -57,11 +62,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment-success",
-        Component: PaymentSuccess,
+        element:<PaymentSuccess></PaymentSuccess>,
       },
       {
         path: "/payment-cancelled",
-        Component: PaymentCancelled,
+        element:<PaymentCancelled></PaymentCancelled>,
       },
     ],
   },
