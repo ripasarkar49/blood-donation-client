@@ -17,6 +17,7 @@ import SearchPage from "../Pages/searchPage/SearchPage";
 import DonateRequest from "../Pages/donateRequest/DonateRequest";
 import DonarDetails from "../Pages/DonarDetails/DonarDetails";
 import Banner from "../Components/Banner";
+import FeaturedSection from "../Components/FeaturedSection";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/banner",
         element:<Banner></Banner>,
+      },
+      {
+        path: "/feature-section",
+        element:<FeaturedSection></FeaturedSection>,
       },
       {
         path: "/search-page",
