@@ -13,6 +13,8 @@ import Profile from "../Pages/Profile";
 import Funding from "../Pages/Founding/Funding";
 import PaymentSuccess from "../Pages/Founding/PaymentSuccess";
 import PaymentCancelled from "../Pages/Founding/PaymentCancelled";
+import SearchPage from "../Pages/searchPage/SearchPage";
+import DonateRequest from "../Pages/donateRequest/DonateRequest";
 
 const router = createBrowserRouter([
   {
@@ -32,8 +34,16 @@ const router = createBrowserRouter([
         Component: Register,
       },
       {
+        path: "/search-page",
+        Component: SearchPage,
+      },
+      {
         path: "/funding",
         Component: Funding,
+      },
+      {
+        path: "/donate-request",
+        Component: DonateRequest,
       },
       {
         path: "/payment-success",
