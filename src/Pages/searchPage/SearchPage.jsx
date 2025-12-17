@@ -47,9 +47,6 @@ const SearchPage = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     const blood = e.target.blood.value;
-
-   
-
     axiosInstance
       .get(`/search-requests?blood=${blood}&district=${district}&upazila=${upazila}`)
       .then((res) => setRequests(res.data))
