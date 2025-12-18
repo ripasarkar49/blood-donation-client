@@ -10,7 +10,6 @@ const IMGBB_API_KEY = "4951fc09b999088ad5352346f9bd8bec";
 const Profile = () => {
   const { user } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
-
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({});
   const [districts, setDistricts] = useState([]);

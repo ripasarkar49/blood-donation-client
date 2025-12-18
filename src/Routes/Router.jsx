@@ -19,6 +19,7 @@ import DonarDetails from "../Pages/DonarDetails/DonarDetails";
 import Banner from "../Components/Banner";
 import FeaturedSection from "../Components/FeaturedSection";
 import ContactUs from "../Components/ContactUs";
+import EditRequest from "../Pages/EditRequest/EditRequest";
 
 const router = createBrowserRouter([
   {
@@ -90,7 +91,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "/dashboard",
+        path:'',
         element: <MainDashBoard></MainDashBoard>,
       },
       {
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile></Profile>,
+      },
+      {
+        path: "edit-request/:id",
+        element: <EditRequest></EditRequest>,
       },
     ],
   },

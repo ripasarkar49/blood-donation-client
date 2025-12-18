@@ -72,7 +72,7 @@ export default function AddRequest() {
 
       form.reset();
     } catch (err) {
-      // 🟡 Backend 403 handling
+
       if (err.response?.status === 403) {
         Swal.fire({
           icon: "error",
@@ -250,13 +250,6 @@ export default function AddRequest() {
                 className="textarea textarea-bordered w-full"
               />
             </div>
-            {/* {userStatus === "blocked" && (
-              <p className="text-red-600 text-center mt-2">
-                ⚠️ Your account is blocked. You cannot create a donation
-                request.
-              </p>
-            )} */}
-            {/* Submit Button */}
             <button
               disabled={userState === "blocked"}
               className={`btn w-full mt-4 ${

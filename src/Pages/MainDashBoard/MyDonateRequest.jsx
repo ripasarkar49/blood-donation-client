@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Link } from "react-router";
+import { CheckCircle, SquarePen, Trash2, XCircle } from "lucide-react";
+import Swal from "sweetalert2";
 
 const MyDonateRequest = () => {
   const [totalRequest, setTotalRequest] = useState(0);
@@ -11,10 +14,13 @@ const MyDonateRequest = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    let url = `/my-donation-requests?page=${currentPage - 1}&size=${itemsPerPage}`;
+    let url = `/my-donation-requests?page=${
+      currentPage - 1
+    }&size=${itemsPerPage}`;
     if (statusFilter) url += `&status=${statusFilter}`;
 
-    axiosSecure.get(url)
+    axiosSecure
+      .get(url)
       .then((res) => {
         setMyRequest(res.data.request);
         setTotalRequest(res.data.totalRequest);
@@ -26,7 +32,44 @@ const MyDonateRequest = () => {
   const pages = [...Array(numberOfPage).keys()].map((e) => e + 1);
 
   const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
-  const handleNext = () => currentPage < pages.length && setCurrentPage(currentPage + 1);
+  const handleNext = () =>
+    currentPage < pages.length && setCurrentPage(currentPage + 1);
+
+
+  const handleStatusUpdate = (id, status) => {
+    axiosSecure
+      .patch(`/update-donation-status?id=${id}&status=${status}`)
+      .then(() => {
+        setMyRequest((prev) =>
+          prev.map((req) =>
+            req._id === id ? { ...req, donation_status: status } : req
+          )
+        );
+
+        Swal.fire({
+          icon: "success",
+          title: `Donation ${status}`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      });
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This donation request will be deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/delete/${id}`).then(() => {
+          setMyRequest((prev) => prev.filter((req) => req._id !== id));
+        });
+      }
+    });
+  };
 
   return (
     <div className="p-4">
@@ -54,13 +97,16 @@ const MyDonateRequest = () => {
         <table className="table w-full">
           <thead>
             <tr className="bg-red-200">
-              <th>#</th>
+              <th>SL</th>
               <th>Recipient Name</th>
               <th>Recipient Location</th>
-              <th>Donation Date</th>
-              <th>Donation Time</th>
-              <th>Blood Group</th>
-              <th>Donation Status</th>
+              <th> Date</th>
+              <th> Time</th>
+              <th>Blood</th>
+              <th> Status</th>
+              <th> Donar Info</th>
+              <th>Action</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
@@ -73,6 +119,56 @@ const MyDonateRequest = () => {
                 <td>{request?.time}</td>
                 <td>{request?.blood}</td>
                 <td>{request?.donation_status}</td>
+                <td>
+                  {" "}
+                  {request.donation_status === "inprogress" ? (
+                    <>
+                      <p>{request.req_name}</p>
+                      <p>{request.req_email}</p>
+                    </>
+                  ) : (
+                    "-"
+                  )}
+                </td>
+                <td className="flex gap-2">
+                  {/* pending → edit + delete */}
+                  {request.donation_status === "pending" && (
+                    <>
+                      <Link to={`/dashboard/edit-request/${request._id}`}>
+                        <SquarePen className="text-blue-600" />
+                      </Link>
+                      <button onClick={() => handleDelete(request._id)}>
+                        <Trash2 className="text-red-600" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* inprogress → done + cancel */}
+                  {request.donation_status === "inprogress" && (
+                    <>
+                      <button
+                        onClick={() => handleStatusUpdate(request._id, "done")}
+                      >
+                        <CheckCircle className="text-green-600" />
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleStatusUpdate(request._id, "canceled")
+                        }
+                      >
+                        <XCircle className="text-orange-600" />
+                      </button>
+                    </>
+                  )}
+                </td>
+                <td>
+                  <Link
+                    to={`/donate-details/${request._id}`}
+                    className="btn bg-red-600 text-white font-semibold rounded"
+                  >
+                    View
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -81,19 +177,29 @@ const MyDonateRequest = () => {
 
       {/* Pagination */}
       <div className="flex justify-center mt-6 gap-2">
-        <button onClick={handlePrev} className="btn" disabled={currentPage === 1}>
+        <button
+          onClick={handlePrev}
+          className="btn"
+          disabled={currentPage === 1}
+        >
           Prev
         </button>
         {pages.map((page) => (
           <button
             key={page}
-            className={`btn ${page === currentPage ? "bg-rose-500 text-white" : ""}`}
+            className={`btn ${
+              page === currentPage ? "bg-rose-500 text-white" : ""
+            }`}
             onClick={() => setCurrentPage(page)}
           >
             {page}
           </button>
         ))}
-        <button onClick={handleNext} className="btn" disabled={currentPage === pages.length}>
+        <button
+          onClick={handleNext}
+          className="btn"
+          disabled={currentPage === pages.length}
+        >
           Next
         </button>
       </div>
