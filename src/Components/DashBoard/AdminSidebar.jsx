@@ -1,17 +1,7 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router";
-import profileIcon from "../../assets/user.png";
-import {
-  Home,
-  Users,
-  ShoppingBag,
-  Package,
-  BarChart3,
-  LogOut,
-  PackageCheck,
-  PlusCircle,
-  HeartHandshake,
-} from "lucide-react";
+import logo from "../../assets/logo.png";
+import { Home, Users, LogOut, PlusCircle, HeartHandshake } from "lucide-react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
@@ -31,10 +21,10 @@ const AdminSidebar = () => {
       .catch((error) => console.log(error));
   };
   return (
-    <aside className="w-64 h-screen bg-gray-900 text-gray-200 flex flex-col p-5 shadow-xl">
-      {/* Logo */}
-      <div className="text-2xl font-semibold mb-10 text-white tracking-wide">
-        Admin Panel
+    <aside className="w-64 h-screen bg-gray-700 text-gray-200 flex flex-col p-5 shadow-xl">
+      <div className=" flex gap-2 items-center text-center mb-4 tracking-wide">
+        <img src={logo} className="w-10 h-10 rounded-full" alt="logo" />
+        <span className="text-3xl font-bold text-red-600">BloodCare</span>
       </div>
 
       {/* Navigation */}
@@ -51,7 +41,7 @@ const AdminSidebar = () => {
           }
         >
           {" "}
-          <Home className="h-5 w-5" /> Dashboard
+          <Home className="h-5 w-5 bg-red-700" /> Dashboard
         </NavLink>
         <NavLink
           to="profile"
@@ -65,7 +55,6 @@ const AdminSidebar = () => {
           }
         >
           {" "}
-          {/* <img className="h-5 w-5" />  */}
           <CgProfile className=" h-5 w-5 bg-red-700" />
           Profile
         </NavLink>
@@ -100,8 +89,25 @@ const AdminSidebar = () => {
             }
           >
             {" "}
-            <Users className="h-5 w-5" />
+            <Users className="h-5 w-5 bg-red-700" />
             All Users
+          </NavLink>
+        )}
+        {role == "admin" && (
+          <NavLink
+            to="all-blood-donation-request"
+            className={({ isActive }) =>
+              `flex items-center gap-3 p-3 rounded-lg transition relative
+              ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
+                  : "hover:bg-gray-700"
+              }`
+            }
+          >
+            {" "}
+            <HeartHandshake className="h-5 w-5 bg-red-700" />
+            All Blood Donation Request
           </NavLink>
         )}
         {role == "donar" && (

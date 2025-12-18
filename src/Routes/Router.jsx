@@ -20,6 +20,7 @@ import Banner from "../Components/Banner";
 import FeaturedSection from "../Components/FeaturedSection";
 import ContactUs from "../Components/ContactUs";
 import EditRequest from "../Pages/EditRequest/EditRequest";
+import AllDonationRequests from "../Components/DashBoard/AllDonationRequests";
 
 const router = createBrowserRouter([
   {
@@ -28,39 +29,39 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element:<Home></Home>,
+        element: <Home></Home>,
       },
       {
         path: "/login",
-        element:<Login></Login>,
+        element: <Login></Login>,
       },
       {
         path: "/register",
-        element:<Register></Register>,
+        element: <Register></Register>,
       },
       {
         path: "/banner",
-        element:<Banner></Banner>,
+        element: <Banner></Banner>,
       },
       {
         path: "/feature-section",
-        element:<FeaturedSection></FeaturedSection>,
+        element: <FeaturedSection></FeaturedSection>,
       },
       {
         path: "/search-page",
-        element:<SearchPage></SearchPage>,
+        element: <SearchPage></SearchPage>,
       },
       {
         path: "/contact-us",
-        element:<ContactUs></ContactUs>,
+        element: <ContactUs></ContactUs>,
       },
       {
         path: "/funding",
-        element:<Funding></Funding>,
+        element: <Funding></Funding>,
       },
       {
         path: "/donate-request",
-        element:<DonateRequest></DonateRequest>,
+        element: <DonateRequest></DonateRequest>,
       },
       {
         path: "/donate-details/:id",
@@ -73,11 +74,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment-success",
-        element:<PaymentSuccess></PaymentSuccess>,
+        element: <PaymentSuccess></PaymentSuccess>,
       },
       {
         path: "/payment-cancelled",
-        element:<PaymentCancelled></PaymentCancelled>,
+        element: <PaymentCancelled></PaymentCancelled>,
       },
     ],
   },
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
       {
         path: "edit-request/:id",
         element: <EditRequest></EditRequest>,
+      },
+      {
+        path: "all-blood-donation-request",
+        element: <AllDonationRequests />,
       },
     ],
   },
