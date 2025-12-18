@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { Link } from "react-router";
-import { CheckCircle, SquarePen, Trash2, XCircle } from "lucide-react";
 import Swal from "sweetalert2";
+import DonationRequestTable from "../../Components/DonationRequestTable";
 
 const MyDonateRequest = () => {
   const [totalRequest, setTotalRequest] = useState(0);
@@ -34,7 +33,6 @@ const MyDonateRequest = () => {
   const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
   const handleNext = () =>
     currentPage < pages.length && setCurrentPage(currentPage + 1);
-
 
   const handleStatusUpdate = (id, status) => {
     axiosSecure
@@ -93,87 +91,13 @@ const MyDonateRequest = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-        <table className="table w-full">
-          <thead>
-            <tr className="bg-red-200">
-              <th>SL</th>
-              <th>Recipient Name</th>
-              <th>Recipient Location</th>
-              <th> Date</th>
-              <th> Time</th>
-              <th>Blood</th>
-              <th> Status</th>
-              <th> Donar Info</th>
-              <th>Action</th>
-              <th>View</th>
-            </tr>
-          </thead>
-          <tbody>
-            {myRequest.map((request, index) => (
-              <tr key={request._id || `${request.Recipient_Name}-${index}`}>
-                <th>{(currentPage - 1) * itemsPerPage + index + 1}</th>
-                <td>{request?.Recipient_Name}</td>
-                <td>{request?.full_address}</td>
-                <td>{request?.date}</td>
-                <td>{request?.time}</td>
-                <td>{request?.blood}</td>
-                <td>{request?.donation_status}</td>
-                <td>
-                  {" "}
-                  {request.donation_status === "inprogress" ? (
-                    <>
-                      <p>{request.req_name}</p>
-                      <p>{request.req_email}</p>
-                    </>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-                <td className="flex gap-2">
-                  {/* pending → edit + delete */}
-                  {request.donation_status === "pending" && (
-                    <>
-                      <Link to={`/dashboard/edit-request/${request._id}`}>
-                        <SquarePen className="text-blue-600" />
-                      </Link>
-                      <button onClick={() => handleDelete(request._id)}>
-                        <Trash2 className="text-red-600" />
-                      </button>
-                    </>
-                  )}
-
-                  {/* inprogress → done + cancel */}
-                  {request.donation_status === "inprogress" && (
-                    <>
-                      <button
-                        onClick={() => handleStatusUpdate(request._id, "done")}
-                      >
-                        <CheckCircle className="text-green-600" />
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleStatusUpdate(request._id, "canceled")
-                        }
-                      >
-                        <XCircle className="text-orange-600" />
-                      </button>
-                    </>
-                  )}
-                </td>
-                <td>
-                  <Link
-                    to={`/donate-details/${request._id}`}
-                    className="btn bg-red-600 text-white font-semibold rounded"
-                  >
-                    View
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DonationRequestTable
+        requests={myRequest}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        onDelete={handleDelete}
+        onStatusUpdate={handleStatusUpdate}
+      ></DonationRequestTable>
 
       {/* Pagination */}
       <div className="flex justify-center mt-6 gap-2">

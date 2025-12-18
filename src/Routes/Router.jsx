@@ -91,7 +91,7 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path:'',
+        index: true,
         element: <MainDashBoard></MainDashBoard>,
       },
       {
