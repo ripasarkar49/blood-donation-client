@@ -4,44 +4,57 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 const MyDonateRequest = () => {
   const [totalRequest, setTotalRequest] = useState(0);
   const [myRequest, setMyRequest] = useState([]);
-  const [itemsPerPage, seItemPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("");
 
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    axiosSecure
-      .get(`/my-donation-requests?page=${currentPage - 1}&size=${itemsPerPage}`)
+    let url = `/my-donation-requests?page=${currentPage - 1}&size=${itemsPerPage}`;
+    if (statusFilter) url += `&status=${statusFilter}`;
+
+    axiosSecure.get(url)
       .then((res) => {
-        //   console.log(res.data);
         setMyRequest(res.data.request);
         setTotalRequest(res.data.totalRequest);
-      });
-  }, [axiosSecure, currentPage, itemsPerPage]);
+      })
+      .catch((err) => console.error(err));
+  }, [axiosSecure, currentPage, itemsPerPage, statusFilter]);
 
   const numberOfPage = Math.ceil(totalRequest / itemsPerPage);
   const pages = [...Array(numberOfPage).keys()].map((e) => e + 1);
-  //   console.log(myRequest);
-  //   console.log(totalRequest);
-  //   console.log(numberOfPage);
-  //   console.log(pages);
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  const handleNext = () => {
-    if (currentPage < pages.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+
+  const handlePrev = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const handleNext = () => currentPage < pages.length && setCurrentPage(currentPage + 1);
+
   return (
-    <div>
+    <div className="p-4">
+      {/* Filter */}
+      <div className="mb-4 flex items-center gap-4">
+        <label className="font-medium">Filter by Status:</label>
+        <select
+          className="select select-bordered w-52"
+          value={statusFilter}
+          onChange={(e) => {
+            setCurrentPage(1);
+            setStatusFilter(e.target.value);
+          }}
+        >
+          <option value="">All</option>
+          <option value="pending">Pending</option>
+          <option value="inprogress">In Progress</option>
+          <option value="done">Done</option>
+          <option value="canceled">Canceled</option>
+        </select>
+      </div>
+
+      {/* Table */}
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-        <table className="table ">
+        <table className="table w-full">
           <thead>
             <tr className="bg-red-200">
-              <th></th>
+              <th>#</th>
               <th>Recipient Name</th>
               <th>Recipient Location</th>
               <th>Donation Date</th>
@@ -52,8 +65,8 @@ const MyDonateRequest = () => {
           </thead>
           <tbody>
             {myRequest.map((request, index) => (
-              <tr key={request?._id}>
-                <th>{currentPage * 10 + (index + 1) - 10}</th>
+              <tr key={request._id || `${request.Recipient_Name}-${index}`}>
+                <th>{(currentPage - 1) * itemsPerPage + index + 1}</th>
                 <td>{request?.Recipient_Name}</td>
                 <td>{request?.full_address}</td>
                 <td>{request?.date}</td>
@@ -65,21 +78,22 @@ const MyDonateRequest = () => {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-center mt-12 gap-4">
-        <button onClick={handlePrev} className="btn">
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2">
+        <button onClick={handlePrev} className="btn" disabled={currentPage === 1}>
           Prev
         </button>
         {pages.map((page) => (
           <button
-            className={`btn ${
-              page === currentPage ? "bg-rose-500 text-white" : ""
-            }`}
+            key={page}
+            className={`btn ${page === currentPage ? "bg-rose-500 text-white" : ""}`}
             onClick={() => setCurrentPage(page)}
           >
             {page}
           </button>
         ))}
-        <button onClick={handleNext} className="btn">
+        <button onClick={handleNext} className="btn" disabled={currentPage === pages.length}>
           Next
         </button>
       </div>

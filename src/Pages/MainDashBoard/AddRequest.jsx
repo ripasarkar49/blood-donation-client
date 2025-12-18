@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 
 export default function AddRequest() {
-  const { user } = useContext(AuthContext);
+  const { user, userState } = useContext(AuthContext);
   const [districts, setDistricts] = useState([]);
   const [district, setDistrict] = useState("");
   const [upazilas, setUpozilas] = useState([]);
@@ -30,48 +30,63 @@ export default function AddRequest() {
       .catch((err) => console.log(err));
   }, []);
 
-  const handlerequest = (e) => {
+  const handlerequest = async (e) => {
     e.preventDefault();
+
+    if (userState === "blocked") {
+      Swal.fire({
+        icon: "error",
+        title: "Account Blocked",
+        text: "You cannot create a donation request.",
+      });
+      return;
+    }
+
     const form = e.target;
-    const req_name = form.req_name.value;
-    const req_email = form.req_email.value;
-    const Recipient_Name = form.Recipient_Name.value;
-    const req_district = district;
-    const req_upazila = upazila;
-    const hospitsl_name = form.hospitsl_name.value;
-    const full_address = form.full_address.value;
-    const blood = form.blood.value;
-    const time = form.time.value;
-    const date = form.date.value;
-    const message = form.message.value;
 
     const formData = {
-      req_name,
-      req_email,
-      Recipient_Name,
-      req_district,
-      req_upazila,
-      hospitsl_name,
-      full_address,
-      blood,
-      time,
-      date,
-      message,
+      req_name: form.req_name.value,
+      req_email: user.email, 
+      Recipient_Name: form.Recipient_Name.value,
+      req_district: district,
+      req_upazila: upazila,
+      hospitsl_name: form.hospitsl_name.value,
+      full_address: form.full_address.value,
+      blood: form.blood.value,
+      time: form.time.value,
+      date: form.date.value,
+      message: form.message.value,
       donation_status: "pending",
     };
-    axiosSecure
-      .post("/requests", formData)
-      .then((res) => {
-        Swal.fire({
-          icon: "success",
-          title: `Request ID: ${res.data.insertedId}`,
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+
+    try {
+      const res = await axiosSecure.post("/requests", formData);
+
+      Swal.fire({
+        icon: "success",
+        title: "Request Submitted",
+        text: `Request ID: ${res.data.insertedId}`,
+        timer: 1500,
+        showConfirmButton: false,
       });
+
+      form.reset();
+    } catch (err) {
+      // 🟡 Backend 403 handling
+      if (err.response?.status === 403) {
+        Swal.fire({
+          icon: "error",
+          title: "Account Blocked",
+          text: err.response.data?.message,
+        });
+        return;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+      });
+    }
   };
 
   return (
@@ -235,9 +250,23 @@ export default function AddRequest() {
                 className="textarea textarea-bordered w-full"
               />
             </div>
-
+            {/* {userStatus === "blocked" && (
+              <p className="text-red-600 text-center mt-2">
+                ⚠️ Your account is blocked. You cannot create a donation
+                request.
+              </p>
+            )} */}
             {/* Submit Button */}
-            <button className="btn btn- w-full mt-4">Request</button>
+            <button
+              disabled={userState === "blocked"}
+              className={`btn w-full mt-4 ${
+                userState === "blocked"
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-600"
+              }`}
+            >
+              Request
+            </button>
           </form>
         </div>
       </div>
