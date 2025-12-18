@@ -1,29 +1,43 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
-import { AuthContext } from "../../Provider/AuthProvider";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
   const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState("All");
 
-  const fetchUsers = () => {
-    axiosSecure.get("/users").then((res) => {
+  const fetchUsers = async () => {
+    try {
+      const statusQuery = filter === "All" ? "all" : filter.toLowerCase(); // convert to backend expected format
+      const res = await axiosSecure.get(`/users?status=${statusQuery}`);
       setUsers(res.data);
-    });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [axiosSecure]);
-  //   console.log(users);
-  const handleStatusChange = (email, status) => {
-    axiosSecure
-      .patch(`/update/user/status?email=${email}&status=${status}`)
-      .then((res) => {
-        // console.log(res.data);
-        fetchUsers();
-      });
+  }, [axiosSecure, filter]);
+
+  const handleStatusChange = async (email, status) => {
+    try {
+      await axiosSecure.patch(
+        `/update/user/status?email=${email}&status=${status}`
+      );
+      fetchUsers();
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  // Filter users based on the select dropdown
+  const filteredUsers = users.filter((user) => {
+    if (filter === "All") return true;
+    if (filter === "Active") return user.status === "active";
+    if (filter === "Blocked") return user.status === "Blocked";
+    return true;
+  });
 
   return (
     <div>
@@ -32,10 +46,14 @@ const AllUsers = () => {
 
         {/* Filter */}
         <div className="mb-4 flex justify-between items-center">
-          <select className="select select-bordered max-w-xs">
-            <option>All</option>
-            <option>Active</option>
-            <option>Blocked</option>
+          <select
+            className="select select-bordered max-w-xs"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Active">Active</option>
+            <option value="Blocked">Blocked</option>
           </select>
         </div>
 
@@ -54,26 +72,25 @@ const AllUsers = () => {
             </thead>
 
             <tbody>
-              {/* Row 1 */}
-              {users?.map((user) => (
-                <tr key={user?._id}>
+              {filteredUsers.map((user) => (
+                <tr key={user._id}>
                   <td>
                     <img
-                      src={user?.mainPhotoUrl}
+                      src={user.mainPhotoUrl}
                       className="w-10 h-10 rounded-full"
                     />
                   </td>
-                  <td className="font-medium">{user?.name}</td>
-                  <td>{user?.email}</td>
-                  <td className="capitalize">{user?.role}</td>
+                  <td className="font-medium">{user.name}</td>
+                  <td>{user.email}</td>
+                  <td className="capitalize">{user.role}</td>
                   <td>
-                    <span className="btn btn-ghost">{user?.status}</span>
+                    <span className="btn btn-ghost">{user.status}</span>
                   </td>
                   <th>
-                    {user?.status == "active" ? (
+                    {user.status === "active" ? (
                       <button
                         onClick={() =>
-                          handleStatusChange(user?.email, "Blocked")
+                          handleStatusChange(user.email, "Blocked")
                         }
                         className="btn btn-ghost btn-xs"
                       >
@@ -81,16 +98,13 @@ const AllUsers = () => {
                       </button>
                     ) : (
                       <button
-                        onClick={() =>
-                          handleStatusChange(user?.email, "active")
-                        }
+                        onClick={() => handleStatusChange(user.email, "active")}
                         className="btn btn-ghost btn-xs"
                       >
-                        Active
+                        Activate
                       </button>
                     )}
                   </th>
-                 
                 </tr>
               ))}
             </tbody>
