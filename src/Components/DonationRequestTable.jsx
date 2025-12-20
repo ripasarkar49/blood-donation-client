@@ -42,7 +42,6 @@ const DonationRequestTable = ({
               <td>{request.time}</td>
               <td>{request.blood}</td>
               <td>
-           
                 {isDonor && (
                   <span className="font-medium capitalize">
                     {request.donation_status}
@@ -76,7 +75,7 @@ const DonationRequestTable = ({
                 )}
               </td>
 
-              {userRole !== "donor" && showAction && (
+              {userRole !== "donar" && showAction && (
                 <td className="flex gap-2">
                   {request.donation_status === "pending" && (
                     <>

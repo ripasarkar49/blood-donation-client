@@ -1,7 +1,14 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router";
 import logo from "../../assets/logo.png";
-import { Home, Users, LogOut, PlusCircle, HeartHandshake } from "lucide-react";
+import {
+  Home,
+  Users,
+  LogOut,
+  PlusCircle,
+  HeartHandshake,
+  SmilePlus,
+} from "lucide-react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
@@ -48,7 +55,7 @@ const AdminSidebar = ({ closeDrawer }) => {
           <CgProfile size={18} /> Profile
         </NavLink>
 
-        {(role === "donar" || role === "volunteer") && (
+        {(role === "donar" || role === "volunteer" || role==="admin") && (
           <NavLink
             onClick={closeDrawer}
             to="add-request"
@@ -65,6 +72,15 @@ const AdminSidebar = ({ closeDrawer }) => {
             className={navItemClass}
           >
             <Users size={18} /> All Users
+          </NavLink>
+        )}
+        {role === "admin" && (
+          <NavLink
+            onClick={closeDrawer}
+            to="add-volunteer"
+            className={navItemClass}
+          >
+            <SmilePlus size={18} /> Add Volunteer
           </NavLink>
         )}
 

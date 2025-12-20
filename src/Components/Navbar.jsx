@@ -53,9 +53,7 @@ const Navbar = () => {
             <NavLink to="/donate-request" className={navItemClass}>
               Donation Requests
             </NavLink>
-            <NavLink to="/search-page" className={navItemClass}>
-              Search
-            </NavLink>
+            
 
             {user && (
               <NavLink to="/funding" className={navItemClass}>
@@ -147,9 +145,7 @@ const Navbar = () => {
           <Link to="/donate-request" onClick={() => setOpen(false)}>
             Donation Requests
           </Link>
-            <NavLink to="/search-page" onClick={() => setOpen(false)}>
-              Search
-            </NavLink>
+           
           {user && (
             <>
               <Link to="/funding" onClick={() => setOpen(false)}>

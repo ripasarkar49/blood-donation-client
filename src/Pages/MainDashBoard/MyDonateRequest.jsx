@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import DonationRequestTable from "../../Components/DonationRequestTable";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const MyDonateRequest = () => {
   const [totalRequest, setTotalRequest] = useState(0);
@@ -9,7 +10,7 @@ const MyDonateRequest = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState("");
-
+  const { role } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -101,6 +102,7 @@ const MyDonateRequest = () => {
         itemsPerPage={itemsPerPage}
         onDelete={handleDelete}
         onStatusUpdate={handleStatusUpdate}
+        userRole={role}
       ></DonationRequestTable>
 
       {/* Pagination */}

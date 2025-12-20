@@ -21,6 +21,7 @@ import FeaturedSection from "../Components/FeaturedSection";
 import ContactUs from "../Components/ContactUs";
 import EditRequest from "../Pages/EditRequest/EditRequest";
 import AllDonationRequests from "../Components/DashBoard/AllDonationRequests";
+import AddVolunteer from "../Pages/MainDashBoard/AddVolunteer";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +119,10 @@ const router = createBrowserRouter([
       {
         path: "all-blood-donation-request",
         element: <AllDonationRequests />,
+      },
+      {
+        path: "add-volunteer",
+        element: <AddVolunteer></AddVolunteer>,
       },
     ],
   },
