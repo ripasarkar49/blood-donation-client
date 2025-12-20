@@ -5,6 +5,7 @@ import useAxios from "../../Hooks/UseAxios";
 const DonateRequest = () => {
   const axiosInstance = useAxios();
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -26,7 +27,8 @@ const DonateRequest = () => {
       <div className="text-red-500 text-center space-y-2 ">
         <h2 className="font-bold text-3xl">All Pending Donation Request</h2>
         <p className=" ">
-          “Be the hope for someone in need. Answer the call for blood donation❤️❤️
+          “Be the hope for someone in need. Answer the call for blood
+          donation❤️❤️
         </p>
       </div>
       <div className="grid py-7 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

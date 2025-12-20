@@ -7,8 +7,13 @@ const DonationRequestTable = ({
   itemsPerPage,
   onDelete,
   onStatusUpdate,
-  showAction = true, 
+  userRole,
 }) => {
+  const showAction = userRole !== "volunteer";
+  const isDonor = userRole === "donar";
+  const isVolunteer = userRole === "volunteer";
+  const isAdmin = userRole === "admin";
+
   return (
     <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
       <table className="table w-full">
@@ -30,18 +35,36 @@ const DonationRequestTable = ({
         <tbody>
           {requests.map((request, index) => (
             <tr key={request._id}>
-              <th>
-                {(currentPage - 1) * itemsPerPage + index + 1}
-              </th>
-
+              <th>{(currentPage - 1) * itemsPerPage + index + 1}</th>
               <td>{request.Recipient_Name}</td>
               <td>{request.full_address}</td>
               <td>{request.date}</td>
               <td>{request.time}</td>
               <td>{request.blood}</td>
-              <td>{request.donation_status}</td>
+              <td>
+           
+                {isDonor && (
+                  <span className="font-medium capitalize">
+                    {request.donation_status}
+                  </span>
+                )}
 
-              {/* Donor Info */}
+                {/* Admin */}
+                {(isAdmin || isVolunteer) && (
+                  <select
+                    className="select select-sm select-bordered"
+                    value={request.donation_status}
+                    onChange={(e) =>
+                      onStatusUpdate(request._id, e.target.value)
+                    }
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="inprogress">In Progress</option>
+                    <option value="done">Done</option>
+                    <option value="canceled">Canceled</option>
+                  </select>
+                )}
+              </td>
               <td>
                 {request.donation_status === "inprogress" ? (
                   <>
@@ -53,39 +76,27 @@ const DonationRequestTable = ({
                 )}
               </td>
 
-              {/* Action */}
-              {showAction && (
+              {userRole !== "donor" && showAction && (
                 <td className="flex gap-2">
                   {request.donation_status === "pending" && (
                     <>
-                      <Link
-                        to={`/dashboard/edit-request/${request._id}`}
-                      >
+                      <Link to={`/dashboard/edit-request/${request._id}`}>
                         <SquarePen className="text-blue-600" />
                       </Link>
-
-                      <button
-                        onClick={() => onDelete(request._id)}
-                      >
+                      <button onClick={() => onDelete(request._id)}>
                         <Trash2 className="text-red-600" />
                       </button>
                     </>
                   )}
-
                   {request.donation_status === "inprogress" && (
                     <>
                       <button
-                        onClick={() =>
-                          onStatusUpdate(request._id, "done")
-                        }
+                        onClick={() => onStatusUpdate(request._id, "done")}
                       >
                         <CheckCircle className="text-green-600" />
                       </button>
-
                       <button
-                        onClick={() =>
-                          onStatusUpdate(request._id, "canceled")
-                        }
+                        onClick={() => onStatusUpdate(request._id, "canceled")}
                       >
                         <XCircle className="text-orange-600" />
                       </button>
@@ -94,7 +105,6 @@ const DonationRequestTable = ({
                 </td>
               )}
 
-              {/* View */}
               <td>
                 <Link
                   to={`/donate-details/${request._id}`}

@@ -49,9 +49,7 @@ const Navbar = () => {
         {/* Center (Desktop) */}
         <div className="navbar-center hidden lg:flex">
           <ul className="flex gap-3 font-medium">
-            <NavLink to="/" className={navItemClass}>
-              Home
-            </NavLink>
+           
             <NavLink to="/donate-request" className={navItemClass}>
               Donation Requests
             </NavLink>
@@ -145,9 +143,7 @@ const Navbar = () => {
 
         {/* Links */}
         <ul className="p-4 flex flex-col gap-3 text-lg">
-          <NavLink to="/" onClick={() => setOpen(false)}>
-              Home
-            </NavLink>
+         
           <Link to="/donate-request" onClick={() => setOpen(false)}>
             Donation Requests
           </Link>

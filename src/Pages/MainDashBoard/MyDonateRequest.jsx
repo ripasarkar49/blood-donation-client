@@ -70,7 +70,11 @@ const MyDonateRequest = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 w-full overflow-x-auto">
+      <h2 className="text-4xl font-bold mb-6 text-center text-red-600">
+        My Donation Requests
+      </h2>
+
       {/* Filter */}
       <div className="mb-4 flex items-center gap-4">
         <label className="font-medium">Filter by Status:</label>

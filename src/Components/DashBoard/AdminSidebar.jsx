@@ -6,142 +6,99 @@ import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
 import { CgProfile } from "react-icons/cg";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ closeDrawer }) => {
   const { role, logout } = useContext(AuthContext);
+
   const handleLogout = () => {
-    logout()
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "LogOut Successful!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-      })
-      .catch((error) => console.log(error));
+    logout().then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Logout Successful!",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    });
   };
+
+  const navItemClass = ({ isActive }) =>
+    `flex items-center gap-3 p-3 rounded-lg transition ${
+      isActive ? "bg-blue-600 text-white" : "hover:bg-gray-600"
+    }`;
+
   return (
-    <aside className="w-64 h-screen bg-gray-700 text-gray-200 flex flex-col p-5 shadow-xl">
-      <div className=" flex gap-2 items-center text-center mb-4 tracking-wide">
-        <img src={logo} className="w-10 h-10 rounded-full" alt="logo" />
-        <span className="text-3xl font-bold text-red-600">BloodCare</span>
+    <aside className="w-64 h-screen bg-gray-700 text-gray-200 flex flex-col p-5">
+      {/* Logo */}
+      <div className=" mb-5">
+        <div className="flex items-center gap-2 ">
+          <img src={logo} className="w-10 h-10 rounded-full" />
+          <span className="text-3xl font-bold text-red-500 ">BloodCare</span>
+        </div>
+        <div className="ml-12">
+          <span className="capitalize text-white ">({role} Panel)</span>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex flex-col gap-3">
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-          }
-        >
-          {" "}
-          <Home className="h-5 w-5 bg-red-700" /> Dashboard
+      {/* Menu */}
+      <nav className="flex flex-col gap-2">
+        <NavLink onClick={closeDrawer} to="/dashboard" className={navItemClass}>
+          <Home size={18} /> Dashboard
         </NavLink>
-        <NavLink
-          to="profile"
-          className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-          }
-        >
-          {" "}
-          <CgProfile className=" h-5 w-5 bg-red-700" />
-          Profile
+
+        <NavLink onClick={closeDrawer} to="profile" className={navItemClass}>
+          <CgProfile size={18} /> Profile
         </NavLink>
-        {role == "donar" && (
+
+        {(role === "donar" || role === "volunteer") && (
           <NavLink
+            onClick={closeDrawer}
             to="add-request"
-            className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-            }
+            className={navItemClass}
           >
-            {" "}
-            <PlusCircle className="h-5 w-5 bg-red-700" />
-            {/* <Heart size={24} /> */}
-            Add Donation Request
+            <PlusCircle size={18} /> Add Request
           </NavLink>
         )}
-        {role == "admin" && (
+
+        {role === "admin" && (
           <NavLink
+            onClick={closeDrawer}
             to="all-users"
-            className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-            }
+            className={navItemClass}
           >
-            {" "}
-            <Users className="h-5 w-5 bg-red-700" />
-            All Users
+            <Users size={18} /> All Users
           </NavLink>
         )}
-        {role == "admin" && (
+
+        {(role === "admin" || role === "volunteer") && (
           <NavLink
+            onClick={closeDrawer}
             to="all-blood-donation-request"
-            className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-            }
+            className={navItemClass}
           >
-            {" "}
-            <HeartHandshake className="h-5 w-5 bg-red-700" />
-            All Blood Donation Request
+            <HeartHandshake size={18} /> All Requests
           </NavLink>
         )}
-        {role == "donar" && (
+
+        {role === "donar" && (
           <NavLink
+            onClick={closeDrawer}
             to="my-donation-requests"
-            className={({ isActive }) =>
-              `flex items-center gap-3 p-3 rounded-lg transition relative
-              ${
-                isActive
-                  ? "bg-blue-600 text-white shadow-[0_0_10px_#3b82f6]"
-                  : "hover:bg-gray-700"
-              }`
-            }
+            className={navItemClass}
           >
-            {" "}
-            <HeartHandshake className="h-5 w-5 bg-red-700" />
-            My Donation Requests
+            <HeartHandshake size={18} /> My Requests
           </NavLink>
         )}
       </nav>
 
-      {/* Logout */}
-      <div className="mt-auto flex items-center justify-between">
-        <NavLink
-          to="/"
-          className=" btn  bg-red-600 hover:bg-red-700 rounded-lg transition"
-        >
-          <Home size={18} /> Home
+      {/* Footer */}
+      <div className="mt-auto space-y-3">
+        <NavLink to="/" className="btn w-full bg-red-600 text-white">
+          Home
         </NavLink>
         <button
           onClick={handleLogout}
-          className="btn bg-red-600 hover:bg-red-700 rounded-lg transition"
+          className="btn w-full bg-red-600 text-white"
         >
-          <LogOut size={18} /> Logout
+          Logout
         </button>
       </div>
     </aside>
