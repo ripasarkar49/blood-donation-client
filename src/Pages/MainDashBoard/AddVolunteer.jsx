@@ -76,7 +76,7 @@ const AddVolunteer = () => {
       blood,
       district,
       upazila,
-      role: "volunteer", 
+      role: "volunteer",
       status: "active",
     };
 
@@ -93,7 +93,7 @@ const AddVolunteer = () => {
                 showConfirmButton: false,
               });
               setUser({ ...user, displayName: name, photoURL: mainPhotoUrl });
-           
+
               axios
                 .post("http://localhost:5000/users", formData)
                 .then((res) => {
@@ -102,7 +102,6 @@ const AddVolunteer = () => {
                 .catch((err) => {
                   console.log(err);
                 });
-         
             })
             .catch((err) => {
               console.log(err);
@@ -127,11 +126,9 @@ const AddVolunteer = () => {
   return (
     <div className="flex justify-center items-center">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl py-4">
-        <h2 className="font-semibold text-2xl text-center">
-          Add Volunteer
-        </h2>
+        <h2 className="font-semibold text-2xl text-center">Add Volunteer</h2>
         <form onSubmit={handleRegister} className="card-body">
-          <fieldset>
+          <fieldset className="space-y-2">
             {/* Name */}
             <label className="label">Name</label>
             <input
@@ -143,63 +140,75 @@ const AddVolunteer = () => {
             />
             {nameError && <p className="text-red-500 text-sm">{nameError}</p>}
 
-            {/* Photo URL */}
-            <label className="label">Photo URL</label>
-            <input
-              name="photo"
-              type="file"
-              className="input"
-              placeholder="Photo URL"
-              required
-            />
-            {/* choose a blood*/}
-            <label className="label">Blood Group</label>
-            <select name="blood" defaultValue="" className="select ">
-              <option value="" disabled={true}>
-                Select blood group
-              </option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="unknown">Unknown</option>
-            </select>
-            {/* districts */}
-            <label className="label">District</label>
-            <select
-              value={district}
-              onChange={(e) => setDistrict(e.target.value)}
-              className="select"
-            >
-              <option value="" disabled>
-                Select Your District
-              </option>
-              {districts.map((d) => (
-                <option value={d?.name} key={d.id}>
-                  {d?.name}
-                </option>
-              ))}
-            </select>
-            {/* upazila */}
-            <label className="label">Upazila</label>
-            <select
-              value={upazila}
-              onChange={(e) => setUpozila(e.target.value)}
-              className="select"
-            >
-              <option value="" disabled>
-                Select Your Upazila
-              </option>
-              {upazilas.map((u) => (
-                <option value={u?.name} key={u.id}>
-                  {u?.name}
-                </option>
-              ))}
-            </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Photo URL */}
+              <div>
+                <label className="label">Photo URL</label>
+                <input
+                  name="photo"
+                  type="file"
+                  className="input"
+                  placeholder="Photo URL"
+                  required
+                />
+              </div>
+              {/* choose a blood*/}
+              <div>
+                <label className="label">Blood Group</label>
+                <select name="blood" defaultValue="" className="select ">
+                  <option value="" disabled={true}>
+                    Select blood group
+                  </option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="unknown">Unknown</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* districts */}
+              <div>
+                <label className="label">District</label>
+                <select
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                  className="select"
+                >
+                  <option value="" disabled>
+                    Select Your District
+                  </option>
+                  {districts.map((d) => (
+                    <option value={d?.name} key={d.id}>
+                      {d?.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* upazila */}
+              <div>
+                <label className="label">Upazila</label>
+                <select
+                  value={upazila}
+                  onChange={(e) => setUpozila(e.target.value)}
+                  className="select"
+                >
+                  <option value="" disabled>
+                    Select Your Upazila
+                  </option>
+                  {upazilas.map((u) => (
+                    <option value={u?.name} key={u.id}>
+                      {u?.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
             {/* Email */}
             <label className="label">Email</label>
             <input
@@ -229,7 +238,10 @@ const AddVolunteer = () => {
             </div>
 
             {/* AddVolunteer Button */}
-            <button type="submit" className="btn btn-neutral mt-4 w-full">
+            <button
+              type="submit"
+              className="btn bg-red-600 text-white mt-4 w-full"
+            >
               Add Volunteer
             </button>
           </fieldset>

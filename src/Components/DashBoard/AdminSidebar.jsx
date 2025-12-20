@@ -8,6 +8,8 @@ import {
   PlusCircle,
   HeartHandshake,
   SmilePlus,
+  LogOutIcon,
+  HomeIcon,
 } from "lucide-react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
@@ -55,7 +57,7 @@ const AdminSidebar = ({ closeDrawer }) => {
           <CgProfile size={18} /> Profile
         </NavLink>
 
-        {(role === "donar" || role === "volunteer" || role==="admin") && (
+        {(role === "donar" || role === "volunteer" || role === "admin") && (
           <NavLink
             onClick={closeDrawer}
             to="add-request"
@@ -108,12 +110,13 @@ const AdminSidebar = ({ closeDrawer }) => {
       {/* Footer */}
       <div className="mt-auto space-y-3">
         <NavLink to="/" className="btn w-full bg-red-600 text-white">
-          Home
+          <HomeIcon size={20} /> Home
         </NavLink>
         <button
           onClick={handleLogout}
           className="btn w-full bg-red-600 text-white"
         >
+          <LogOutIcon size={20} />
           Logout
         </button>
       </div>

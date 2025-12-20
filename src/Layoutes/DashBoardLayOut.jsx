@@ -31,23 +31,18 @@ const DashBoardLayOut = () => {
       )}
 
       {/* ---------- Main Content ---------- */}
-      <div className="flex-1 flex flex-col">
-        {/* Mobile Header */}
-        <div className="lg:hidden flex items-center gap-3 p-4 shadow">
-          <button
-            onClick={() => setOpen(true)}
-            className="btn btn-ghost"
-          >
+      <div className="flex-1 flex flex-col min-w-0">
+        <div className="lg:hidden flex items-center gap-3 p-4 shadow bg-white">
+          <button onClick={() => setOpen(true)} className="btn btn-ghost">
             <Menu />
           </button>
-          <h2 className="text-xl font-bold text-red-600">
-            Dashboard
-          </h2>
+          <h2 className="text-xl font-bold text-red-600">Dashboard</h2>
         </div>
-
         {/* Page Content */}
-        <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-          <Outlet />
+        <div className="flex-1 overflow-y-auto p-2 md:p-8 bg-gray-50">
+          <div className="max-w-full overflow-x-hidden">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

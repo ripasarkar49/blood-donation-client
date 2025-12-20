@@ -71,8 +71,8 @@ const AllBloodDonationRequests = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow">
-      <h2 className="text-4xl font-bold mb-6 text-center text-red-600">
+    <div className="p-3 md:p-6 bg-white rounded-lg shadow-sm">
+      <h2 className="text-2xl md:text-4xl font-bold mb-6 text-center text-red-600">
         All Blood Donation Requests
       </h2>
 
@@ -95,15 +95,17 @@ const AllBloodDonationRequests = () => {
         </select>
       </div>
 
-      {/* Table */}
-      <DonationRequestTable
-        requests={requests}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        onDelete={handleDelete}
-        onStatusUpdate={handleStatusUpdate}
-        userRole={role}
-      />
+      <div className="w-full">
+        {/* Table */}
+        <DonationRequestTable
+          requests={requests}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          onDelete={handleDelete}
+          onStatusUpdate={handleStatusUpdate}
+          userRole={role}
+        />
+      </div>
 
       {/* Pagination */}
       <div className="flex justify-center mt-6 gap-2">

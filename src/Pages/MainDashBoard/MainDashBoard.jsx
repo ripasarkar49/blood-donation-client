@@ -17,7 +17,7 @@ const MainDashBoard = () => {
   useEffect(() => {
     if (role === "donar") {
       axiosSecure.get("/my-donation-requests?size=3&page=0").then((res) => {
-        setRecentRequests(res.data.request);
+        setRecentRequests(res.data.request || []);
       });
     }
   }, [role, axiosSecure]);

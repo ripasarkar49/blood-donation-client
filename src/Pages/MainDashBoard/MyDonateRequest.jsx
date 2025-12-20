@@ -71,9 +71,9 @@ const MyDonateRequest = () => {
   };
 
   return (
-    <div className="p-4 w-full overflow-x-auto">
-      <h2 className="text-4xl font-bold mb-6 text-center text-red-600">
-        My Donation Requests
+    <div className="p-3 md:p-6 bg-white rounded-lg shadow-sm">
+      <h2 className="text-2xl md:text-4xl font-bold mb-6 text-center text-red-600">
+        All Blood Donation Requests
       </h2>
 
       {/* Filter */}
@@ -95,7 +95,8 @@ const MyDonateRequest = () => {
         </select>
       </div>
 
-      {/* Table */}
+     <div className="w-ful">
+       {/* Table */}
       <DonationRequestTable
         requests={myRequest}
         currentPage={currentPage}
@@ -104,6 +105,7 @@ const MyDonateRequest = () => {
         onStatusUpdate={handleStatusUpdate}
         userRole={role}
       ></DonationRequestTable>
+     </div>
 
       {/* Pagination */}
       <div className="flex justify-center mt-6 gap-2">

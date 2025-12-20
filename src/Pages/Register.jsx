@@ -253,17 +253,6 @@ const Register = () => {
             <button type="submit" className="btn btn-neutral mt-4 w-full">
               Register
             </button>
-
-            {/* <p className="font-bold text-center py-1">OR</p> */}
-
-            {/* Google Login */}
-            {/* <button
-              onClick={handleGoogleLogin}
-              className="btn btn-secondary btn-outline w-full"
-            >
-              <FaGoogle size={24} /> Login With Google
-            </button> */}
-
             <p className="pt-4 text-center">
               Already have an account?{" "}
               <Link to="/login" className="text-secondary font-semibold">

@@ -1,14 +1,13 @@
 import React, { use, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
-import { FaGoogle } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 const Login = () => {
   const [error, setError] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, googleLogin } = use(AuthContext);
+  const { signIn } = use(AuthContext);
   const location = useLocation();
   const Navigate = useNavigate();
   //   console.log(location);
@@ -35,21 +34,6 @@ const Login = () => {
       });
   };
 
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then(() => {
-        Swal.fire({
-          icon: "success",
-          title: "Login Successful!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
-        Navigate(location.state ? location.state : "/");
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  };
   const handleTogglePass = (event) => {
     event.preventDefault();
     setShowPassword(!showPassword);
@@ -89,22 +73,11 @@ const Login = () => {
                 {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
               </button>
             </div>
-            <div>
-              <Link to="/forget-password" state={userEmail} className="link link-hover">
-                Forgot password?
-              </Link>
-            </div>
+
             <button type="submit" className="btn btn-neutral mt-4">
               Login
             </button>
             {error && <p className="text-red-600 text-xs">{error}</p>}
-            {/* <p className="font-bold text-center py-1 ">OR</p> */}
-            {/* <button
-              onClick={handleGoogleLogin}
-              className="btn btn-secondary btn-outline w-full"
-            >
-              <FaGoogle size={24} /> Login With Google
-            </button> */}
           </fieldset>
           <p>
             Don't have an account?{" "}

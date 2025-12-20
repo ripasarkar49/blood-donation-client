@@ -15,9 +15,9 @@ const DonationRequestTable = ({
   const isAdmin = userRole === "admin";
 
   return (
-    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-      <table className="table w-full">
-        <thead>
+    <div className="w-full overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
+      <table className="table w-full min-w-[900px] border-collapse">
+        <thead className="bg-red-50 text-red-700">
           <tr className="bg-red-200">
             <th>SL</th>
             <th>Recipient Name</th>
@@ -32,12 +32,17 @@ const DonationRequestTable = ({
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="divide-y divide-gray-100">
           {requests.map((request, index) => (
             <tr key={request._id}>
               <th>{(currentPage - 1) * itemsPerPage + index + 1}</th>
               <td>{request.Recipient_Name}</td>
-              <td>{request.full_address}</td>
+              <td
+                className="max-w-[150px] truncate"
+                title={request.full_address}
+              >
+                {request.full_address}
+              </td>
               <td>{request.date}</td>
               <td>{request.time}</td>
               <td>{request.blood}</td>
@@ -75,7 +80,7 @@ const DonationRequestTable = ({
                 )}
               </td>
 
-              {userRole !== "donar" && showAction && (
+              {userRole !== "volunteer" && showAction && (
                 <td className="flex gap-2">
                   {request.donation_status === "pending" && (
                     <>
