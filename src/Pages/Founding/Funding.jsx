@@ -7,11 +7,20 @@ const Funding = () => {
   const axiosInstance = useAxios();
   const { user } = useContext(AuthContext);
   const [donations, setDonations] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const size = 10; // প্রতি পেজে ১০টি করে
+
   useEffect(() => {
-    axiosInstance.get("/payments").then((res) => {
-      setDonations(res.data);
+    // API কল করার সময় page এবং size পাঠানো হচ্ছে
+    axiosInstance.get(`/payments?page=${currentPage}&size=${size}`).then((res) => {
+      setDonations(res.data.payments);
+      setTotalCount(res.data.totalCount);
     });
-  }, [axiosInstance]);
+  }, [axiosInstance, currentPage]);
+
+  const totalPages = Math.ceil(totalCount / size);
+  const pages = [...Array(totalPages).keys()];
   const handleCheckOut = (e) => {
     e.preventDefault();
     const donateAmount = e.target.donateAmount.value;
@@ -115,6 +124,36 @@ const Funding = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-8 gap-2">
+        <button
+          className="btn btn-sm btn-outline"
+          disabled={currentPage === 0}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
+
+        {pages.map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`btn btn-sm ${
+              currentPage === page ? "bg-red-500 text-white" : "btn-outline"
+            }`}
+          >
+            {page + 1}
+          </button>
+        ))}
+
+        <button
+          className="btn btn-sm btn-outline"
+          disabled={currentPage === totalPages - 1}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

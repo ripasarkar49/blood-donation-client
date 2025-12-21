@@ -10,6 +10,12 @@ const AllUsers = () => {
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(totalUsers / itemsPerPage);
+  const pages = [...Array(totalPages).keys()];
   useEffect(() => {
     const checkAdmin = async () => {
       try {
@@ -32,13 +38,15 @@ const AllUsers = () => {
   const fetchUsers = async () => {
     try {
       const statusQuery = filter === "All" ? "all" : filter.toLowerCase();
-      const res = await axiosSecure.get(`/users?status=${statusQuery}`);
-      setUsers(res.data);
+
+      const res = await axiosSecure.get(
+        `/users?status=${statusQuery}&page=${currentPage}&size=${itemsPerPage}`
+      );
+
+      setUsers(res.data.users);
+      setTotalUsers(res.data.totalUsers);
     } catch (err) {
       console.error(err);
-      if (err.response?.status === 403) {
-        navigate("/dashboard");
-      }
     }
   };
 
@@ -46,7 +54,12 @@ const AllUsers = () => {
     if (!loading) {
       fetchUsers();
     }
-  }, [filter, axiosSecure, loading]);
+  }, [filter, currentPage, loading]);
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+    setCurrentPage(0);
+  };
 
   const handleStatusChange = async (email, status) => {
     await axiosSecure.patch(
@@ -139,6 +152,34 @@ const AllUsers = () => {
             ))}
           </tbody>
         </table>
+        {/* Pagination UI */}
+      <div className="flex justify-center mt-8 gap-2">
+        <button 
+          className="btn btn-sm" 
+          disabled={currentPage === 0}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
+        
+        {pages.map(page => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`btn btn-sm ${currentPage === page ? "btn-primary" : "btn-outline"}`}
+          >
+            {page + 1}
+          </button>
+        ))}
+
+        <button 
+          className="btn btn-sm" 
+          disabled={currentPage === totalPages - 1}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
+      </div>
       </div>
     </div>
   );

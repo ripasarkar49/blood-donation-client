@@ -62,6 +62,7 @@ const MainDashBoard = () => {
             requests={recentRequests}
             currentPage={1}
             itemsPerPage={3}
+             userRole={role}
           />
           <Link
             to="my-donation-requests"
