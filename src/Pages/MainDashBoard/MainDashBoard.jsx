@@ -21,6 +21,11 @@ const MainDashBoard = () => {
 
   const [recentRequests, setRecentRequests] = useState([]);
   const [stats, setStats] = useState({ bloodGroupStats: [] });
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const COLORS = ["#dc2626", "#ef4444", "#f87171", "#fca5a5"];
   /* ---------------- DONOR DATA ---------------- */
   useEffect(() => {
@@ -87,40 +92,47 @@ const MainDashBoard = () => {
               count={stats.totalRequests}
             />
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-            <h3 className="text-xl font-bold mb-6 text-gray-700">
+          <div className="bg-white p-4 md:p-6 rounded-xl shadow-md border border-gray-100 mt-10">
+            <h3 className="text-lg md:text-xl font-bold mb-6 text-gray-700 text-center">
               Blood Requests by Group (Real-time)
             </h3>
-            <div className="w-full h-[350px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.bloodGroupStats}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis
-                    dataKey="group"
-                    label={{
-                      value: "Blood Group",
-                      position: "insideBottom",
-                      offset: -5,
-                    }}
-                  />
-                  <YAxis
-                    label={{
-                      value: "Requests",
-                      angle: -90,
-                      position: "insideLeft",
-                    }}
-                  />
-                  <Tooltip cursor={{ fill: "#fecaca", opacity: 0.3 }} />
-                  <Bar dataKey="count" radius={[5, 5, 0, 0]}>
-                    {stats.bloodGroupStats.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+            <div className="w-full h-[300px] md:h-[400px]">
+              {isMounted && stats?.bloodGroupStats?.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={stats.bloodGroupStats}
+                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#f3f4f6"
+                    />
+                    <XAxis
+                      dataKey="group"
+                      tick={{ fontSize: 12 }}
+                      interval={0}
+                    />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip cursor={{ fill: "#fecaca", opacity: 0.3 }} />
+                    <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                      {stats.bloodGroupStats.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-2">
+                  <Droplets size={40} className="animate-pulse" />
+                  <p>
+                    {isMounted ? "No request data found" : "Loading Chart..."}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </>
