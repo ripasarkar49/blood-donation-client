@@ -8,7 +8,8 @@ BloodCare is a modern, life-saving web application built using the MERN stack (R
 
 ## Live Demo:
 
-[]
+client == [https://react-fireabse-auth-94fc1.web.app || https://blood-care-1.netlify.app/]
+server ==[https://blood-donation-xi-one.vercel.app]
 
 ## Purpose:
 

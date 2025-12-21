@@ -103,7 +103,7 @@ const AddVolunteer = () => {
           photoURL: mainPhotoUrl,
         });
         const dbResponse = await axios.post(
-          "http://localhost:5000/users",
+          "https://blood-donation-xi-one.vercel.app/users",
           formData
         );
         console.log(dbResponse.data);
@@ -131,9 +131,9 @@ const AddVolunteer = () => {
   };
 
   const handleTogglePass = (e) => {
-   e.preventDefault();
-  e.stopPropagation(); 
-  setShowPassword(!showPassword);
+    e.preventDefault();
+    e.stopPropagation();
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -238,14 +238,14 @@ const AddVolunteer = () => {
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
-                className="input input-bordered w-full pr-12" 
+                className="input input-bordered w-full pr-12"
                 placeholder="Password"
                 required
               />
               <button
-                type="button" 
+                type="button"
                 onClick={handleTogglePass}
-                className="absolute right-4 z-10 p-1 flex items-center justify-center" 
+                className="absolute right-4 z-10 p-1 flex items-center justify-center"
               >
                 {showPassword ? (
                   <IoIosEyeOff className="text-2xl text-gray-500" />

@@ -22,7 +22,6 @@ const AuthProvider = ({ children }) => {
   const [role, setRole] = useState("");
   const [userState, setUserState] = useState("");
 
-
   // console.log(loading, user);
 
   const createUser = (email, password) => {
@@ -59,14 +58,16 @@ const AuthProvider = ({ children }) => {
   }, []);
   useEffect(() => {
     if (!user) return;
-    axios.get(`http://localhost:5000/users/role/${user.email}`).then((res) => {
-      //   console.log(res.data.role);
-      setRole(res.data.role);
-      setUserState(res.data.status);
-      
-      setRoleLoading(false);
-      //   setLoading(false);
-    });
+    axios
+      .get(`https://blood-donation-xi-one.vercel.app/users/role/${user.email}`)
+      .then((res) => {
+        //   console.log(res.data.role);
+        setRole(res.data.role);
+        setUserState(res.data.status);
+
+        setRoleLoading(false);
+        //   setLoading(false);
+      });
   }, [user]);
   //   console.log(role);
 
@@ -84,7 +85,6 @@ const AuthProvider = ({ children }) => {
     role,
     roleLoading,
     userState,
-
   };
   return <AuthContext value={authData}>{children}</AuthContext>;
 };

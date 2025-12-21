@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuth } from "firebase/auth";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://blood-donation-xi-one.vercel.app",
 });
 
 axiosInstance.interceptors.request.use(async (config) => {

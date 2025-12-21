@@ -102,7 +102,10 @@ const Register = () => {
               showConfirmButton: false,
             });
             setUser({ ...user, displayName: name, photoURL: mainPhotoUrl });
-            axios.post("http://localhost:5000/users", formData);
+            axios.post(
+              "https://blood-donation-xi-one.vercel.app/users",
+              formData
+            );
             navigate(location.state ? location.state : "/");
           });
         });
