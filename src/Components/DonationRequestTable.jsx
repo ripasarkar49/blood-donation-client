@@ -9,7 +9,7 @@ const DonationRequestTable = ({
   onStatusUpdate,
   userRole,
 }) => {
-  const showAction = userRole !== "volunteer";
+  
   const isDonor = userRole === "donar";
   const isVolunteer = userRole === "volunteer";
   const isAdmin = userRole === "admin";
@@ -27,7 +27,7 @@ const DonationRequestTable = ({
             <th>Blood</th>
             <th>Status</th>
             <th>Donor Info</th>
-            {showAction && <th>Action</th>}
+            {!isVolunteer && <th>Action</th>}
             <th>View</th>
           </tr>
         </thead>
@@ -80,7 +80,7 @@ const DonationRequestTable = ({
                 )}
               </td>
 
-              {userRole !== "volunteer" && showAction && (
+              {userRole !== "volunteer"  && (
                 <td className="flex gap-2">
                   {request.donation_status === "pending" && (
                     <>

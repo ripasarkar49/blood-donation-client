@@ -75,7 +75,7 @@ const AllUsers = () => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-4">All Users</h2>
+      <h2 className="text-4xl text-center text-red-600 font-bold mb-4">All Users</h2>
 
       {/* Filter */}
       <div className="mb-4">
