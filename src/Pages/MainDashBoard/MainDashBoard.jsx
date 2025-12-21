@@ -4,15 +4,24 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import DonationRequestTable from "../../Components/DonationRequestTable";
 import { Users, HeartHandshake, Droplets } from "lucide-react";
 import { Link } from "react-router";
-// import { div } from "framer-motion/client";
 import logo from "../../assets/logo.png";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 const MainDashBoard = () => {
   const { user, role } = useContext(AuthContext);
   const axiosSecure = useAxiosSecure();
 
   const [recentRequests, setRecentRequests] = useState([]);
-  const [stats, setStats] = useState({});
-
+  const [stats, setStats] = useState({ bloodGroupStats: [] });
+  const COLORS = ["#dc2626", "#ef4444", "#f87171", "#fca5a5"];
   /* ---------------- DONOR DATA ---------------- */
   useEffect(() => {
     if (role === "donar") {
@@ -60,23 +69,61 @@ const MainDashBoard = () => {
 
       {/* ---------- ADMIN / VOLUNTEER DASHBOARD ---------- */}
       {(role === "admin" || role === "volunteer") && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
-          <StatCard
-            icon={<Users size={32} />}
-            title="Total Users"
-            count={stats.totalUsers}
-          />
-          <StatCard
-            icon={<HeartHandshake size={32} />}
-            title="Total Funding"
-            count={`$${stats.totalFunding}`}
-          />
-          <StatCard
-            icon={<Droplets size={32} />}
-            title="Total Requests"
-            count={stats.totalRequests}
-          />
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+            <StatCard
+              icon={<Users size={32} />}
+              title="Total Users"
+              count={stats.totalUsers}
+            />
+            <StatCard
+              icon={<HeartHandshake size={32} />}
+              title="Total Funding"
+              count={`$${stats.totalFunding}`}
+            />
+            <StatCard
+              icon={<Droplets size={32} />}
+              title="Total Requests"
+              count={stats.totalRequests}
+            />
+          </div>
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+            <h3 className="text-xl font-bold mb-6 text-gray-700">
+              Blood Requests by Group (Real-time)
+            </h3>
+            <div className="w-full h-[350px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={stats.bloodGroupStats}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="group"
+                    label={{
+                      value: "Blood Group",
+                      position: "insideBottom",
+                      offset: -5,
+                    }}
+                  />
+                  <YAxis
+                    label={{
+                      value: "Requests",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
+                  />
+                  <Tooltip cursor={{ fill: "#fecaca", opacity: 0.3 }} />
+                  <Bar dataKey="count" radius={[5, 5, 0, 0]}>
+                    {stats.bloodGroupStats.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

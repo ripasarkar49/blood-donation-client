@@ -1,11 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { AuthContext } from "../../Provider/AuthProvider";
+import { useNavigate } from "react-router";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const checkAdmin = async () => {
+      try {
+        const res = await axiosSecure.get(`/users/role/${user?.email}`);
+        if (res.data?.role !== "admin") {
+          navigate("/dashboard");
+        } else {
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error("Auth check failed", err);
+        navigate("/");
+      }
+    };
 
+    if (user?.email) {
+      checkAdmin();
+    }
+  }, [user, axiosSecure, navigate]);
   const fetchUsers = async () => {
     try {
       const statusQuery = filter === "All" ? "all" : filter.toLowerCase();
@@ -13,12 +36,17 @@ const AllUsers = () => {
       setUsers(res.data);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 403) {
+        navigate("/dashboard");
+      }
     }
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, [filter, axiosSecure]);
+    if (!loading) {
+      fetchUsers();
+    }
+  }, [filter, axiosSecure, loading]);
 
   const handleStatusChange = async (email, status) => {
     await axiosSecure.patch(

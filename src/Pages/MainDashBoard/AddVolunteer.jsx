@@ -1,17 +1,20 @@
-import { Link, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import axios from "axios";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { useContext, useEffect, useState } from "react";
-
+import { initializeApp, deleteApp, getApp } from "firebase/app";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import app from "../../Firebase/firebase.config";
 const AddVolunteer = () => {
-  const { createUser, setUser, updateUser, googleLogin } =
-    useContext(AuthContext);
   const [nameError, setNameError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
   const [districts, setDistricts] = useState([]);
   const [district, setDistrict] = useState("");
   const [upazilas, setUpozilas] = useState([]);
@@ -81,46 +84,56 @@ const AddVolunteer = () => {
     };
 
     if (res.data.success == true) {
-      createUser(email, password)
-        .then((result) => {
-          const user = result.user;
-          updateUser({ displayName: name, photoURL: mainPhotoUrl })
-            .then(() => {
-              Swal.fire({
-                icon: "success",
-                title: "Volunteer Added Successfully!",
-                timer: 1500,
-                showConfirmButton: false,
-              });
-              setUser({ ...user, displayName: name, photoURL: mainPhotoUrl });
-
-              axios
-                .post("http://localhost:5000/users", formData)
-                .then((res) => {
-                  console.log(res.data);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-              setUser(user);
-            });
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: "error",
-            title: "Registration Failed",
-            text: error.message,
-          });
+      try {
+        let secondaryApp;
+        try {
+          secondaryApp = getApp("Secondary");
+        } catch (e) {
+          secondaryApp = initializeApp(app.options, "Secondary");
+        }
+        const secondaryAuth = getAuth(secondaryApp);
+        const result = await createUserWithEmailAndPassword(
+          secondaryAuth,
+          email,
+          password
+        );
+        const newVolunteer = result.user;
+        await updateProfile(newVolunteer, {
+          displayName: name,
+          photoURL: mainPhotoUrl,
         });
+        const dbResponse = await axios.post(
+          "http://localhost:5000/users",
+          formData
+        );
+        console.log(dbResponse.data);
+        await signOut(secondaryAuth);
+        await deleteApp(secondaryApp);
+        Swal.fire({
+          icon: "success",
+          title: "Volunteer Added Successfully!",
+          text: "New volunteer can now login with their credentials.",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        form.reset();
+        setDistrict("");
+        setUpozila("");
+      } catch (error) {
+        console.error("Error adding volunteer:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Action Failed",
+          text: error.message,
+        });
+      }
     }
   };
 
   const handleTogglePass = (e) => {
-    e.preventDefault();
-    setShowPassword(!showPassword);
+   e.preventDefault();
+  e.stopPropagation(); 
+  setShowPassword(!showPassword);
   };
 
   return (
@@ -221,19 +234,24 @@ const AddVolunteer = () => {
 
             {/* Password */}
             <label className="label">Password</label>
-            <div className="relative">
+            <div className="relative w-full flex items-center">
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
-                className="input"
+                className="input input-bordered w-full pr-12" 
                 placeholder="Password"
                 required
               />
               <button
+                type="button" 
                 onClick={handleTogglePass}
-                className="btn btn-xs top-2 right-5 absolute"
+                className="absolute right-4 z-10 p-1 flex items-center justify-center" 
               >
-                {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+                {showPassword ? (
+                  <IoIosEyeOff className="text-2xl text-gray-500" />
+                ) : (
+                  <IoIosEye className="text-2xl text-gray-500" />
+                )}
               </button>
             </div>
 
