@@ -125,29 +125,7 @@ const HomeContent = () => {
         </div>
       </section>
 
-      {/* 6. Blog Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="w-11/12 max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 italic">Health <span className="text-red-600">Insights</span></h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="blog-card bg-white rounded-3xl overflow-hidden shadow-sm group">
-                <div className="h-48 bg-gray-200 overflow-hidden">
-                   <img src={`https://images.unsplash.com/photo-1615461066841-6116ecaaba30?q=80&w=800`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="blog" />
-                </div>
-                <div className="p-6">
-                  <div className="flex gap-4 text-[10px] text-gray-400 mb-3 uppercase font-bold">
-                    <span className="flex items-center gap-1"><FaUser /> Admin</span>
-                    <span className="flex items-center gap-1"><FaCalendarAlt /> Jan 12, 2026</span>
-                  </div>
-                  <h3 className="font-bold text-lg leading-tight mb-4 group-hover:text-red-600 transition-colors">Benefits of Regular Blood Donation</h3>
-              
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 };
