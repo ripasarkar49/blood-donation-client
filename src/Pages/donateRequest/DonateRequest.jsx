@@ -140,8 +140,36 @@ const DonateRequest = () => {
 
       {/* Loading State */}
       {loading ? (
-        <div className="flex justify-center py-20">
-          <span className="loading loading-spinner loading-lg text-red-600"></span>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, index) => (
+            <div
+              key={index}
+              className="card bg-white border border-gray-100 shadow-sm p-5 space-y-3 animate-pulse rounded-2xl"
+            >
+              {/* Recipient Name Skeleton */}
+              <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+
+              {/* Location Skeleton */}
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              </div>
+
+              {/* Badge Skeleton */}
+              <div className="h-8 w-24 bg-gray-200 rounded-full my-2"></div>
+
+              {/* Date/Time Skeleton */}
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-4 bg-gray-200 rounded-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+              </div>
+
+              {/* Button Skeleton */}
+              <div className="flex justify-end pt-2">
+                <div className="h-9 w-28 bg-gray-200 rounded-lg"></div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
         /* Grid Section */
