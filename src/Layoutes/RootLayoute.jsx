@@ -6,11 +6,15 @@ import Footer from "../Components/Footer";
 const RootLayoute = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar></Navbar>
+    <section>
+        <Navbar></Navbar>
+    </section>
       <main className="grow w-11/12 mx-auto my-7">
         <Outlet />
       </main>
-      <Footer></Footer>
+    <section>
+        <Footer></Footer>
+    </section>
     </div>
   );
 };

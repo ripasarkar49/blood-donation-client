@@ -1,13 +1,77 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
 
 @import "tailwindcss";
 @plugin "daisyui";
 
+:root {
+  /* Premium Blood Donation Theme */
+  --color-primary: #D32F2F;        /* Deep Blood Red */
+  --color-primary-hover: #B71C1C;  /* Darker Red */
+  --color-secondary: #263238;      /* Charcoal / Dark Slate */
+  --color-accent: #FFEBEE;         /* Very Light Red */
+  --color-text-main: #212121;      /* UI Black */
+  --color-text-light: #757575;     /* UI Grey */
+  --color-background: #F9FAFB;     /* Off-white background */
+  --color-surface: #FFFFFF;        /* Pure white surface */
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
 
 body {
+  font-family: "Poppins", sans-serif; /* Poppins for headings/UI */
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+p {
   font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+}
+
+/* Custom Utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary-custom {
+  background-color: var(--color-primary);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-custom {
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-custom:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF5252 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

@@ -1,30 +1,40 @@
-import { motion, useInView, useAnimation } from "framer-motion";
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const Reveal = ({ children }) => {
+gsap.registerPlugin(ScrollTrigger);
+
+const Reveal = ({ children, width = "fit-content" }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const controls = useAnimation();
 
   useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
-    }
-  }, [isInView, controls]);
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ref.current,
+        {
+          y: 75,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ref.current,
+            start: "top 85%", // When top of element hits 85% of viewport height
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }, ref);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div ref={ref} className="relative overflow-hidden">
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 75 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        initial="hidden"
-        animate={controls}
-        transition={{ duration: 0.5, delay: 0.25 }}
-      >
-        {children}
-      </motion.div>
+    <div ref={ref} className={`relative ${width}`}>
+      {children}
     </div>
   );
 };
