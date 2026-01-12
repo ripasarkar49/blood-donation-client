@@ -50,8 +50,14 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="flex gap-3 font-medium">
            
+            <NavLink to="/" className={navItemClass}>
+              Home
+            </NavLink>
             <NavLink to="/donate-request" className={navItemClass}>
               Donation Requests
+            </NavLink>
+            <NavLink  to="/search-page" className={navItemClass}>
+               Search Donors
             </NavLink>
             
 
@@ -142,8 +148,14 @@ const Navbar = () => {
         {/* Links */}
         <ul className="p-4 flex flex-col gap-3 text-lg">
          
+          <Link to="/" onClick={() => setOpen(false)}>
+            Home
+          </Link>
           <Link to="/donate-request" onClick={() => setOpen(false)}>
             Donation Requests
+          </Link>
+          <Link  to="/search-page" onClick={() => setOpen(false)}>
+             Search Donors
           </Link>
            
           {user && (
